@@ -1,0 +1,10 @@
+.tools-tab-box {
+  display: flex;
+  flex-direction: row-reverse;
+  > nav {
+    ul,
+    li {
+      list-style: none;
+    }
+  }
+}
