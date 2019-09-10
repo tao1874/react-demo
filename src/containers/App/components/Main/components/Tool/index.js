@@ -1,42 +1,67 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import Tab from './Tab';
 
 import './index.scss';
 
-const tabsData = [
-  {
-    lable: 'Tab1',
-    handler: () => {
-      console.log(this.label);
-    }
-  },
-  {
-    lable: 'Tab1',
-    handler: () => {
-      console.log(this.label);
-    }
-  },
-  {
-    lable: 'Tab1',
-    handler: () => {
-      console.log(this.label);
-    }
+class Tabs extends Component {
+  static propTypes = {
+    children: PropTypes.instanceOf(Array).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: this.props.children[0].props.label
+    };
   }
-];
-const TabItem = ({ onClick, label }) => {
-  return (
-    <li>
-      <button type="button" onClick={onClick}>
-        {label}
-      </button>
-    </li>
-  );
-};
-const Tabs = props => {
-  return (
-    <div className="tools-tab-box">
-      <nav />
-      {/* <div className="tab-box">tabcontainer</div> */}
-    </div>
-  );
-};
+
+  onClickTabItem = tab => {
+    this.setState({ activeTab: tab });
+  };
+
+  render() {
+    const {
+      onClickTabItem,
+      props: { children },
+      state: { activeTab }
+    } = this;
+
+    return (
+      <div className="tabs">
+        <ol className="tab-list">
+          {children.map(child => {
+            const { label } = child.props;
+
+            return (
+              <Tab
+                activeTab={activeTab}
+                key={label}
+                label={label}
+                onClick={onClickTabItem}
+              />
+            );
+          })}
+        </ol>
+        <div className="tab-content">
+          {children.map(child => {
+            const { label } = child.props;
+            const className =
+              label === activeTab
+                ? 'tab-content-item tab-content-item-active'
+                : 'tab-content-item tab-content-item-inactive';
+            // if (child.props.label !== activeTab) return undefined;
+            return (
+              <div className={className} key={label}>
+                {child.props.children}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Tabs;

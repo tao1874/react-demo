@@ -6,7 +6,8 @@ main {
     background-color: skyblue;
   }
   > div:nth-child(2) {
-    min-width: fit-content;
-    background-color: plum;
+    padding: 0.5em;
+    // min-width: fit-content;
+    // background-color: plum;
   }
 }
